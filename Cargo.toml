@@ -67,7 +67,7 @@ aws-msrv-pins = [
 async-trait = "=0.1.89"
 base64 = "=0.22.1"
 bytes = { version = "=1.11.1", features = ["serde"] }
-enumset = { version = "=1.1.5", features = ["serde"] }
+enumset = { version = "=1.1.14", features = ["serde"] }
 futures = "=0.3.32"
 parking_lot = { version = "=0.12.3", features = ["send_guard"] }
 pin-project = "=1.1.11"
