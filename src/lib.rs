@@ -11,19 +11,19 @@
 //!
 //! ## Providers
 //!
-//! - [`AnthropicLanguageModel`] — Anthropic Messages API
-//! - [`OpenAiLanguageModel`] — `OpenAI` Chat Completions API (also works with any
-//!   `OpenAI`-compatible endpoint via [`OpenAiConfig::base_url`])
-//! - [`OllamaLanguageModel`] — local Ollama daemon, OpenAI-compat surface
-//! - [`BedrockProvider`] — AWS Bedrock via Converse / ConverseStream
+//! - `AnthropicLanguageModel` (`anthropic`) — Anthropic Messages API
+//! - `OpenAiLanguageModel` (`openai`) — `OpenAI` Chat Completions API, including
+//!   compatible endpoints through `OpenAiConfig::base_url`
+//! - `OllamaLanguageModel` (`ollama`) — local Ollama daemon
+//! - `BedrockProvider` (`bedrock`) — AWS Bedrock via Converse / ConverseStream
 //! - [`DummyLM`] — test mock
 //!
 //! ## OpenAI-Compatible Providers
 //!
-//! The [`OpenAiLanguageModel`] works out of the box with any provider that
+//! With the `openai` feature, `OpenAiLanguageModel` works with any provider that
 //! implements the `OpenAI` Chat Completions API:
 //!
-//! ```no_run
+//! ```ignore
 //! use std::sync::Arc;
 //! use modelplease::{ApiKey, OpenAiConfig, OpenAiDeps, OpenAiLanguageModel, RetryConfig};
 //!

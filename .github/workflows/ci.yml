@@ -34,7 +34,7 @@ jobs:
       matrix:
         include:
           - os: ubuntu-latest
-            rust: "1.94.1"
+            rust: "1.88.0"
           - os: ubuntu-latest
             rust: stable
           - os: macos-latest
@@ -72,7 +72,7 @@ jobs:
           persist-credentials: false
       - uses: dtolnay/rust-toolchain@4be7066ada62dd38de10e7b70166bc74ed198c30
         with:
-          toolchain: "1.94.1"
+          toolchain: "1.88.0"
       - uses: Swatinem/rust-cache@e18b497796c12c097a38f9edb9d0641fb99eee32
         with:
           cache-bin: false
@@ -113,7 +113,9 @@ jobs:
       - name: Documentation
         env:
           RUSTDOCFLAGS: -D warnings
-        run: cargo doc --no-deps --all-features --locked
+        run: |
+          cargo doc --no-deps --no-default-features --locked
+          cargo doc --no-deps --all-features --locked
 
   supply-chain:
     runs-on: ubuntu-latest

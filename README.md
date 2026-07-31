@@ -138,5 +138,6 @@ cargo test --features bedrock-mantle --test bedrock_mantle_live -- --ignored
 
 ## Compatibility and license
 
-The MSRV is Rust 1.94.1, required by the current AWS SDK dependency graph. Licensed under either
+The MSRV is Rust 1.88. The AWS provider dependency family is pinned to preserve that contract.
+Licensed under either
 MIT or Apache-2.0 at your option.

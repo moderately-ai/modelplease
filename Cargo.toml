@@ -1,8 +1,8 @@
 [package]
 name = "modelplease"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2024"
-rust-version = "1.94.1"
+rust-version = "1.88"
 description = "Provider-neutral language model client with streaming, media, capabilities, and optional provider integrations"
 readme = "README.md"
 license = "MIT OR Apache-2.0"
@@ -23,6 +23,7 @@ anthropic = ["dep:moka", "dep:reqwest"]
 openai = ["dep:moka", "dep:reqwest"]
 ollama = ["dep:moka", "dep:reqwest"]
 bedrock = [
+    "aws-msrv-pins",
     "dep:moka",
     "dep:aws-config",
     "dep:aws-sdk-bedrock",
@@ -31,6 +32,7 @@ bedrock = [
     "dep:rustc-hash",
 ]
 bedrock-mantle = [
+    "aws-msrv-pins",
     "dep:moka",
     "dep:reqwest",
     "dep:aws-credential-types",
@@ -41,6 +43,25 @@ bedrock-mantle = [
     "dep:http",
 ]
 all-providers = ["anthropic", "openai", "ollama", "bedrock", "bedrock-mantle"]
+# The AWS SDK uses semver-compatible ranges for its shared runtime crates. Pin
+# the known Rust-1.88-compatible family whenever an AWS provider is enabled so
+# downstream consumers do not silently resolve a newer, higher-MSRV mixture.
+aws-msrv-pins = [
+    "dep:aws-runtime",
+    "dep:aws-sdk-sso",
+    "dep:aws-sdk-ssooidc",
+    "dep:aws-sdk-sts",
+    "dep:aws-smithy-async",
+    "dep:aws-smithy-eventstream",
+    "dep:aws-smithy-http",
+    "dep:aws-smithy-http-client",
+    "dep:aws-smithy-json",
+    "dep:aws-smithy-observability",
+    "dep:aws-smithy-query",
+    "dep:aws-smithy-runtime",
+    "dep:aws-smithy-xml",
+    "dep:aws-types",
+]
 
 [dependencies]
 async-trait = "=0.1.89"
@@ -58,18 +79,32 @@ tracing = "=0.1.44"
 
 moka = { version = "=0.12.14", features = ["future"], optional = true }
 reqwest = { version = "=0.12.28", default-features = false, features = ["json", "multipart", "rustls-tls", "stream"], optional = true }
-aws-config = { version = "=1.10.1", optional = true }
-aws-credential-types = { version = "=1.3.0", optional = true }
-aws-sdk-bedrock = { version = "=1.150.0", default-features = false, features = ["default-https-client", "rt-tokio"], optional = true }
-aws-sdk-bedrockruntime = { version = "=1.139.0", default-features = false, features = ["default-https-client", "rt-tokio"], optional = true }
-aws-sigv4 = { version = "=1.5.1", optional = true }
-aws-smithy-runtime-api = { version = "=1.14.0", optional = true }
-aws-smithy-types = { version = "=1.6.1", optional = true }
+aws-config = { version = "=1.8.13", optional = true }
+aws-credential-types = { version = "=1.2.11", optional = true }
+aws-sdk-bedrock = { version = "=1.130.0", default-features = false, features = ["default-https-client", "rt-tokio"], optional = true }
+aws-sdk-bedrockruntime = { version = "=1.124.0", default-features = false, features = ["default-https-client", "rt-tokio"], optional = true }
+aws-sigv4 = { version = "=1.3.8", optional = true }
+aws-smithy-runtime-api = { version = "=1.11.3", optional = true }
+aws-smithy-types = { version = "=1.4.3", optional = true }
+aws-runtime = { version = "=1.6.0", default-features = false, optional = true }
+aws-sdk-sso = { version = "=1.93.0", default-features = false, optional = true }
+aws-sdk-ssooidc = { version = "=1.95.0", default-features = false, optional = true }
+aws-sdk-sts = { version = "=1.97.0", default-features = false, optional = true }
+aws-smithy-async = { version = "=1.2.11", default-features = false, optional = true }
+aws-smithy-eventstream = { version = "=0.60.18", default-features = false, optional = true }
+aws-smithy-http = { version = "=0.63.3", default-features = false, optional = true }
+aws-smithy-http-client = { version = "=1.1.9", default-features = false, optional = true }
+aws-smithy-json = { version = "=0.62.3", default-features = false, optional = true }
+aws-smithy-observability = { version = "=0.2.4", default-features = false, optional = true }
+aws-smithy-query = { version = "=0.60.13", default-features = false, optional = true }
+aws-smithy-runtime = { version = "=1.10.0", default-features = false, optional = true }
+aws-smithy-xml = { version = "=0.60.13", default-features = false, optional = true }
+aws-types = { version = "=1.3.11", default-features = false, optional = true }
 http = { version = "=1.4.0", optional = true }
 rustc-hash = { version = "=2.1.1", optional = true }
 
 [dev-dependencies]
-aws-config = "=1.10.1"
+aws-config = "=1.8.13"
 chrono = { version = "=0.4.44", features = ["serde"] }
 clap = { version = "=4.6.0", features = ["derive", "env"] }
 reqwest = { version = "=0.12.28", default-features = false, features = ["json", "rustls-tls"] }
