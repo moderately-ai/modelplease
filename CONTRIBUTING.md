@@ -1,6 +1,6 @@
 # Contributing
 
-Use Rust 1.94.1 or newer. Before opening a pull request, run:
+Use Rust 1.88 or newer. Before opening a pull request, run:
 
 ```bash
 cargo fmt --all -- --check
