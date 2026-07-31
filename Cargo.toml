@@ -1,0 +1,151 @@
+[package]
+name = "modelplease"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.94.1"
+description = "Provider-neutral language model client with streaming, media, capabilities, and optional provider integrations"
+readme = "README.md"
+license = "MIT OR Apache-2.0"
+authors = [
+    "Thomas Santerre <opensource@moderately.ai>",
+    "Moderately AI Inc. <opensource@moderately.ai>",
+]
+repository = "https://github.com/moderately-ai/modelplease"
+homepage = "https://github.com/moderately-ai/modelplease"
+documentation = "https://docs.rs/modelplease"
+keywords = ["llm", "ai", "openai", "anthropic", "bedrock"]
+categories = ["api-bindings", "asynchronous"]
+exclude = [".github/**", "scripts/**"]
+
+[features]
+default = []
+anthropic = ["dep:moka", "dep:reqwest"]
+openai = ["dep:moka", "dep:reqwest"]
+ollama = ["dep:moka", "dep:reqwest"]
+bedrock = [
+    "dep:moka",
+    "dep:aws-config",
+    "dep:aws-sdk-bedrock",
+    "dep:aws-sdk-bedrockruntime",
+    "dep:aws-smithy-types",
+    "dep:rustc-hash",
+]
+bedrock-mantle = [
+    "dep:moka",
+    "dep:reqwest",
+    "dep:aws-credential-types",
+    "dep:aws-sdk-bedrock",
+    "dep:aws-sdk-bedrockruntime",
+    "dep:aws-sigv4",
+    "dep:aws-smithy-runtime-api",
+    "dep:http",
+]
+all-providers = ["anthropic", "openai", "ollama", "bedrock", "bedrock-mantle"]
+
+[dependencies]
+async-trait = "=0.1.89"
+base64 = "=0.22.1"
+bytes = { version = "=1.11.1", features = ["serde"] }
+enumset = { version = "=1.1.5", features = ["serde"] }
+futures = "=0.3.32"
+parking_lot = { version = "=0.12.3", features = ["send_guard"] }
+pin-project = "=1.1.11"
+serde = { version = "=1.0.228", features = ["derive"] }
+serde_json = { version = "=1.0.149", features = ["arbitrary_precision"] }
+thiserror = "=2.0.18"
+tokio = { version = "=1.50.0", features = ["fs", "io-std", "io-util", "macros", "rt-multi-thread", "signal", "sync", "time"] }
+tracing = "=0.1.44"
+
+moka = { version = "=0.12.14", features = ["future"], optional = true }
+reqwest = { version = "=0.12.28", default-features = false, features = ["json", "multipart", "rustls-tls", "stream"], optional = true }
+aws-config = { version = "=1.10.1", optional = true }
+aws-credential-types = { version = "=1.3.0", optional = true }
+aws-sdk-bedrock = { version = "=1.150.0", default-features = false, features = ["default-https-client", "rt-tokio"], optional = true }
+aws-sdk-bedrockruntime = { version = "=1.139.0", default-features = false, features = ["default-https-client", "rt-tokio"], optional = true }
+aws-sigv4 = { version = "=1.5.1", optional = true }
+aws-smithy-runtime-api = { version = "=1.14.0", optional = true }
+aws-smithy-types = { version = "=1.6.1", optional = true }
+http = { version = "=1.4.0", optional = true }
+rustc-hash = { version = "=2.1.1", optional = true }
+
+[dev-dependencies]
+aws-config = "=1.10.1"
+chrono = { version = "=0.4.44", features = ["serde"] }
+clap = { version = "=4.6.0", features = ["derive", "env"] }
+reqwest = { version = "=0.12.28", default-features = false, features = ["json", "rustls-tls"] }
+tokio = { version = "=1.50.0", features = ["test-util"] }
+tracing-subscriber = { version = "=0.3.23", features = ["env-filter", "json", "registry"] }
+
+[[example]]
+name = "anthropic_test"
+required-features = ["anthropic"]
+
+[[example]]
+name = "openai_test"
+required-features = ["openai"]
+
+[[example]]
+name = "ollama_test"
+required-features = ["ollama"]
+
+[[example]]
+name = "bedrock_test"
+required-features = ["bedrock"]
+
+[[example]]
+name = "bedrock_mantle_test"
+required-features = ["bedrock-mantle"]
+
+[[example]]
+name = "bedrock_mantle_sweep"
+required-features = ["bedrock", "bedrock-mantle"]
+
+[[test]]
+name = "bedrock_live"
+required-features = ["bedrock"]
+
+[[test]]
+name = "bedrock_mantle_live"
+required-features = ["bedrock-mantle"]
+
+[package.metadata.docs.rs]
+all-features = true
+
+[lints.rust]
+unsafe_code = "deny"
+
+[lints.clippy]
+all = { level = "deny", priority = -1 }
+pedantic = { level = "allow", priority = -1 }
+nursery = { level = "allow", priority = -1 }
+cargo = { level = "allow", priority = -1 }
+dbg_macro = "deny"
+print_stdout = "deny"
+print_stderr = "deny"
+unwrap_used = "allow"
+expect_used = "allow"
+panic = "allow"
+too_many_lines = "allow"
+too_many_arguments = "allow"
+module_name_repetitions = "allow"
+missing_errors_doc = "allow"
+missing_panics_doc = "allow"
+doc_markdown = "allow"
+cast_possible_truncation = "allow"
+cast_sign_loss = "allow"
+cast_precision_loss = "allow"
+cast_possible_wrap = "allow"
+cast_lossless = "allow"
+similar_names = "allow"
+struct_excessive_bools = "allow"
+type_complexity = "allow"
+result_large_err = "allow"
+multiple_crate_versions = "allow"
+future_not_send = "allow"
+
+[profile.dev]
+debug = "line-tables-only"
+split-debuginfo = "unpacked"
+
+[profile.dev.package."*"]
+opt-level = 1
